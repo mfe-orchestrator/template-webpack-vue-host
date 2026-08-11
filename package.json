@@ -1,6 +1,7 @@
 {
   "name": "template-webpack-vue-host",
   "version": "1.0.0",
+  "packageManager": "pnpm@11.21.0",
   "description": "Webpack + Vue 3 + Module Federation Host",
   "scripts": {
     "start": "webpack serve --mode development --open",
@@ -24,7 +25,7 @@
     "html-webpack-plugin": "^5.6.5",
     "style-loader": "^4.0.0",
     "vue-loader": "^17.4.2",
-    "webpack": "^5.103.0",
+    "webpack": "^5.109.2",
     "webpack-cli": "^6.0.1",
     "webpack-dev-server": "^5.2.2"
   }
