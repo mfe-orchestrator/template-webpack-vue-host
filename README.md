@@ -60,12 +60,22 @@ anything imports a remote:**
 ```js
 import { configure } from '@mfe-orchestrator-hub/client';
 
+const environment = process.env.MFE_ENVIRONMENT;
+
 configure({
   backendUrl: process.env.MFE_BACKEND_URL,
   projectId: process.env.MFE_PROJECT_ID,
-  environment: process.env.MFE_ENVIRONMENT,
+  ...(environment ? { environment } : {}),
 });
 ```
+
+`environment` is optional. The host does not have to know which environment it runs in: when the
+key is absent the backend resolves the environment from the domain the request comes from. With
+webpack it takes two steps. `webpack.config.js` substitutes the bare identifier `undefined` when
+`MFE_ENVIRONMENT` is unset or empty — it used to fall back to `'DEV'`, which silently pinned every
+build that forgot the variable to that environment — and the entry point then drops the key instead
+of forwarding a fake slug. Set `MFE_ENVIRONMENT` only when you want to pin the environment
+explicitly — for instance when several environments are served from the same domain.
 
 **2. The remote, declared in `webpack.config.js` as a promise that resolves to a URL:**
 
@@ -92,14 +102,15 @@ template, so you can see what the environment actually returned.
 
 Read from the shell at build time and injected by webpack's `DefinePlugin`. See `.env.example`.
 
-| variable | what it is |
-| --- | --- |
-| `MFE_BACKEND_URL` | orchestrator backend, including the `/api` suffix |
-| `MFE_PROJECT_ID` | id of your project in the orchestrator |
-| `MFE_ENVIRONMENT` | environment slug, ex. `DEV` |
+| variable | required | what it is |
+| --- | --- | --- |
+| `MFE_BACKEND_URL` | yes | orchestrator backend, including the `/api` suffix |
+| `MFE_PROJECT_ID` | yes | id of your project in the orchestrator |
+| `MFE_ENVIRONMENT` | no | environment slug, ex. `DEV`. Omit it, or leave it empty, and the backend resolves the environment from the domain the request comes from |
 
 ```bash
-MFE_PROJECT_ID=abc123 MFE_ENVIRONMENT=DEV pnpm build
+MFE_PROJECT_ID=abc123 MFE_ENVIRONMENT=DEV pnpm build   # pinned environment
+MFE_PROJECT_ID=abc123 pnpm build                       # resolved by domain
 ```
 
 `.env` is gitignored. Never commit real values.

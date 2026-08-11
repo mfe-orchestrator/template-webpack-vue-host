@@ -3,6 +3,9 @@ const { VueLoaderPlugin } = require('vue-loader');
 const webpack = require('webpack');
 const { ModuleFederationPlugin } = webpack.container;
 
+// Optional: unset, or set to an empty string, means "let the backend decide".
+const environment = process.env.MFE_ENVIRONMENT?.trim();
+
 module.exports = {
   entry: './src/index',
   mode: 'development',
@@ -43,7 +46,11 @@ module.exports = {
         process.env.MFE_BACKEND_URL || 'https://console.mfe-orchestrator.dev/api'
       ),
       'process.env.MFE_PROJECT_ID': JSON.stringify(process.env.MFE_PROJECT_ID || ''),
-      'process.env.MFE_ENVIRONMENT': JSON.stringify(process.env.MFE_ENVIRONMENT || 'DEV'),
+      // DefinePlugin pastes the text on the right into the bundle verbatim, so both
+      // cases are spelled out: a quoted slug when there is one, the bare identifier
+      // `undefined` when there is not. This used to default to 'DEV', which silently
+      // pinned every build that forgot the variable to the DEV environment.
+      'process.env.MFE_ENVIRONMENT': environment ? JSON.stringify(environment) : 'undefined',
     }),
     new ModuleFederationPlugin({
       name: 'host',
