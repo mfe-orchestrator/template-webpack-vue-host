@@ -16,7 +16,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@mfe-orchestrator/client": "^1.0.0",
+    "@mfe-orchestrator-hub/client": "^1.0.0",
     "vue": "^3.5.41"
   },
   "devDependencies": {

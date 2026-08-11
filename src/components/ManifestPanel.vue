@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, ref } from 'vue';
-import { globalVariables, identities, manifest } from '@mfe-orchestrator/client';
+import { globalVariables, identities, manifest } from '@mfe-orchestrator-hub/client';
 
 const microfrontends = ref([]);
 const variables = ref({});
