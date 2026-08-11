@@ -9,7 +9,7 @@ marketplace as `webpack-host-vue`. Webpack 5 + Vue 3, wired as a **host**.
 - [pnpm](https://pnpm.io) 10 or newer
 
 > [!IMPORTANT]
-> `pnpm install` currently fails with a 404 on `@mfe-orchestrator-hub/client`: the client SDK is not
+> `pnpm install` currently fails with a 404 on `@mfe-orchestrator/client`: the client SDK is not
 > published to a registry yet. That single dependency is the only thing missing — everything
 > else in this template installs and builds. Until it is published, either wait for it or point
 > the dependency at a local checkout of the SDK.
@@ -53,7 +53,7 @@ Two pieces make that work.
 anything imports a remote:**
 
 ```js
-import { configure } from '@mfe-orchestrator-hub/client';
+import { configure } from '@mfe-orchestrator/client';
 
 configure({
   backendUrl: process.env.MFE_BACKEND_URL,
@@ -70,7 +70,7 @@ new ModuleFederationPlugin({
   filename: 'remoteEntry.js',
   exposes: { './App': './src/...' },
   remotes: {
-    exampleremote: `promise import('@mfe-orchestrator-hub/client').then(m => m.remoteUrl('example-remote'))`,
+    exampleremote: `promise import('@mfe-orchestrator/client').then(m => m.remoteUrl('example-remote'))`,
   },
   shared: { ... },
 })

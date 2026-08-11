@@ -61,7 +61,7 @@ module.exports = {
         //
         // Never write a URL here. The host does not choose the version it gets: the
         // backend resolves it and remoteUrl() returns that URL, already pinned, verbatim.
-        exampleremote: `promise import('@mfe-orchestrator-hub/client').then(m => m.remoteUrl('example-remote'))`,
+        exampleremote: `promise import('@mfe-orchestrator/client').then(m => m.remoteUrl('example-remote'))`,
       },
       shared: {
         vue: {
