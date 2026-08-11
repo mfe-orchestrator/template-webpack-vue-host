@@ -1,0 +1,31 @@
+{
+  "name": "template-webpack-vue-host",
+  "version": "1.0.0",
+  "description": "Webpack + Vue 3 + Module Federation Host",
+  "scripts": {
+    "start": "webpack serve --mode development --open",
+    "dev": "webpack serve --mode development",
+    "build": "webpack --mode production"
+  },
+  "keywords": [
+    "webpack",
+    "vue",
+    "module-federation",
+    "microfrontend"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@mfe-orchestrator-hub/client": "^1.0.0",
+    "vue": "^3.5.41"
+  },
+  "devDependencies": {
+    "css-loader": "^7.1.2",
+    "html-webpack-plugin": "^5.6.5",
+    "style-loader": "^4.0.0",
+    "vue-loader": "^17.4.2",
+    "webpack": "^5.103.0",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.2"
+  }
+}
