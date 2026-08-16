@@ -2,29 +2,36 @@
   "name": "template-webpack-vue-host",
   "version": "1.0.0",
   "packageManager": "pnpm@11.21.0",
-  "description": "Webpack + Vue 3 + Module Federation Host",
+  "description": "Webpack + Vue 3 + TypeScript + Module Federation Host",
   "scripts": {
     "start": "webpack serve --mode development --open",
     "dev": "webpack serve --mode development",
-    "build": "webpack --mode production"
+    "build": "vue-tsc --noEmit && webpack --mode production"
   },
   "keywords": [
     "webpack",
     "vue",
+    "typescript",
     "module-federation",
     "microfrontend"
   ],
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@mfe-orchestrator-hub/client": "^0.1.0",
+    "@mfe-orchestrator-hub/client": "^0.1.1",
     "vue": "^3.5.41"
   },
   "devDependencies": {
+    "@types/node": "^24.10.1",
+    "@types/webpack-dev-server": "^4.7.2",
     "css-loader": "^7.1.2",
     "html-webpack-plugin": "^5.6.5",
     "style-loader": "^4.0.0",
+    "ts-loader": "^9.5.4",
+    "ts-node": "^10.9.2",
+    "typescript": "~5.9.3",
     "vue-loader": "^17.4.2",
+    "vue-tsc": "^3.1.1",
     "webpack": "^5.109.2",
     "webpack-cli": "^6.0.1",
     "webpack-dev-server": "^5.2.2"

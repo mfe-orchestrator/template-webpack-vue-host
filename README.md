@@ -34,11 +34,11 @@ pnpm build      # production build into dist/
 ├── src/
 │   ├── App.vue                              # shell, consumes the example remote
 │   ├── components/ManifestPanel.vue          # reads the manifest through the SDK
-│   ├── bootstrap.js
-│   └── index.js                             # configure() lives here
+│   ├── bootstrap.ts
+│   └── index.ts                             # configure() lives here
 ├── .env.example
 ├── package.json
-└── webpack.config.js                        # federation config
+└── webpack.config.ts                        # federation config
 ```
 
 ## How the orchestrator is wired in
@@ -50,7 +50,7 @@ canaries exist.
 
 Two pieces make that work.
 
-**1. `configure()`, at the very top of the entry point (`src/index.js`), synchronously, before
+**1. `configure()`, at the very top of the entry point (`src/index.ts`), synchronously, before
 anything imports a remote:**
 
 ```js
@@ -67,13 +67,13 @@ configure({
 
 `environment` is optional. The host does not have to know which environment it runs in: when the
 key is absent the backend resolves the environment from the domain the request comes from. With
-webpack it takes two steps. `webpack.config.js` substitutes the bare identifier `undefined` when
+webpack it takes two steps. `webpack.config.ts` substitutes the bare identifier `undefined` when
 `MFE_ENVIRONMENT` is unset or empty — it used to fall back to `'DEV'`, which silently pinned every
 build that forgot the variable to that environment — and the entry point then drops the key instead
 of forwarding a fake slug. Set `MFE_ENVIRONMENT` only when you want to pin the environment
 explicitly — for instance when several environments are served from the same domain.
 
-**2. The remote, declared in `webpack.config.js` as a promise that resolves to a URL:**
+**2. The remote, declared in `webpack.config.ts` as a promise that resolves to a URL:**
 
 ```js
 new ModuleFederationPlugin({
@@ -117,7 +117,7 @@ MFE_PROJECT_ID=abc123 pnpm build                       # resolved by domain
 
 The marketplace entry for this template declares no `entryPoint`; the whole `dist/` folder is what gets uploaded.
 
-Check it after any change to `webpack.config.js`: the orchestrator serves exactly that path, so a build that
+Check it after any change to `webpack.config.ts`: the orchestrator serves exactly that path, so a build that
 puts the entry somewhere else is broken.
 
 ## Deploying
@@ -154,7 +154,7 @@ docker run -p 8080:80 my-host
 
 ## Notes
 
-- `configure()` runs in `src/index.js`, before the `import('./bootstrap')` that starts the app. Keep that order: the federation runtime imports the SDK to resolve a remote and expects it already configured.
+- `configure()` runs in `src/index.ts`, before the `import('./bootstrap')` that starts the app. Keep that order: the federation runtime imports the SDK to resolve a remote and expects it already configured.
 - `output.publicPath` stays `'auto'`. A classic script derives the base of its chunks from `document.currentScript.src`, which is the URL *before* any redirect, so this is what keeps a version pinned entry loading its own chunks instead of mixing two builds in one page.
 
 ## License

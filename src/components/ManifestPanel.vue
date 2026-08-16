@@ -1,10 +1,15 @@
-<script setup>
+<script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import { globalVariables, identities, manifest } from '@mfe-orchestrator-hub/client';
+import {
+  globalVariables,
+  identities,
+  manifest,
+  type Microfrontend,
+} from '@mfe-orchestrator-hub/client';
 
-const microfrontends = ref([]);
-const variables = ref({});
-const error = ref(null);
+const microfrontends = ref<Microfrontend[]>([]);
+const variables = ref<Record<string, string>>({});
+const error = ref<string | null>(null);
 const ids = identities();
 
 onMounted(async () => {
@@ -13,7 +18,7 @@ onMounted(async () => {
     microfrontends.value = data.microfrontends ?? [];
     variables.value = vars;
   } catch (e) {
-    error.value = e.message;
+    error.value = e instanceof Error ? e.message : String(e);
   }
 });
 </script>

@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    // ts-loader compiles through the TypeScript API, so emit has to stay on;
+    // the type-check pass of `pnpm build` passes --noEmit explicitly.
+    "noEmit": false,
+    "outDir": "dist",
+    "jsx": "preserve",
+    "strict": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noFallthroughCasesInSwitch": true,
+    "allowJs": false,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  // webpack loads this config through ts-node, which runs in Node and therefore
+  // needs CommonJS, while the application code above stays ESM for the bundler.
+  "ts-node": {
+    "compilerOptions": {
+      "module": "CommonJS",
+      "moduleResolution": "node"
+    }
+  },
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.vue", "webpack.config.ts"],
+  "exclude": ["node_modules", "dist"]
+}

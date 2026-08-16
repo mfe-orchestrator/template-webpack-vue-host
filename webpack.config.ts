@@ -1,12 +1,19 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { VueLoaderPlugin } = require('vue-loader');
-const webpack = require('webpack');
+import path from 'path';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import { VueLoaderPlugin } from 'vue-loader';
+import webpack, { type Configuration } from 'webpack';
+import type { Configuration as DevServerConfiguration } from 'webpack-dev-server';
+
 const { ModuleFederationPlugin } = webpack.container;
+
+interface WebpackConfiguration extends Configuration {
+  devServer?: DevServerConfiguration;
+}
 
 // Optional: unset, or set to an empty string, means "let the backend decide".
 const environment = process.env.MFE_ENVIRONMENT?.trim();
 
-module.exports = {
+const config: WebpackConfiguration = {
   entry: './src/index',
   mode: 'development',
   devServer: {
@@ -23,15 +30,26 @@ module.exports = {
     // loading its own chunks and two builds never mix on one page.
     publicPath: 'auto',
     clean: true,
+    path: path.resolve(__dirname, 'dist'),
   },
   resolve: {
-    extensions: ['.js', '.vue', '.json'],
+    extensions: ['.ts', '.js', '.vue', '.json'],
   },
   module: {
     rules: [
       {
         test: /\.vue$/,
         loader: 'vue-loader',
+      },
+      {
+        test: /\.ts$/,
+        loader: 'ts-loader',
+        exclude: /node_modules/,
+        // The <script lang="ts"> block of an SFC reaches ts-loader as a virtual
+        // file with no extension, so it needs the suffix appended to be compiled.
+        options: {
+          appendTsSuffixTo: [/\.vue$/],
+        },
       },
       {
         test: /\.css$/,
@@ -62,7 +80,8 @@ module.exports = {
       remotes: {
         // One entry per microfrontend this host consumes.
         //
-        // The key is the federation-safe name you import from ("exampleremote/Button").
+        // The key is the federation-safe name you import from ("exampleremote/Button"),
+        // and it must have a matching module declaration in src/remotes.d.ts.
         // The string passed to remoteUrl() is the *slug* of the microfrontend in the
         // orchestrator: change it to yours, and add one entry per extra remote.
         //
@@ -82,3 +101,5 @@ module.exports = {
     }),
   ],
 };
+
+export default config;
