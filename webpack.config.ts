@@ -78,16 +78,17 @@ const config: WebpackConfiguration = {
         './App': './src/App.vue',
       },
       remotes: {
-        // One entry per microfrontend this host consumes.
-        //
-        // The key is the federation-safe name you import from ("exampleremote/Button"),
-        // and it must have a matching module declaration in src/remotes.d.ts.
-        // The string passed to remoteUrl() is the *slug* of the microfrontend in the
-        // orchestrator: change it to yours, and add one entry per extra remote.
-        //
-        // Never write a URL here. The host does not choose the version it gets: the
-        // backend resolves it and remoteUrl() returns that URL, already pinned, verbatim.
-        exampleremote: `promise import('@mfe-orchestrator-hub/client').then(m => m.remoteUrl('example-remote'))`,
+        // One entry per microfrontend this host consumes:
+        // - the key is the name you import from ("exampleremote/Button"), and it must
+        //   have a matching module declaration in src/remotes.d.ts;
+        // - 'example-remote' is the *slug* of the microfrontend in the orchestrator;
+        // - 'exampleremote' is the scope, the remote's own ModuleFederationPlugin
+        //   `name`. A remote created by the console from a webpack template is named
+        //   after its slug, slashes to underscores and dashes removed.
+        // Never write a URL here: the backend decides which version is served, and
+        // loadWebpackRemote() resolves it, injects that remoteEntry.js and returns the
+        // container. The SDK publishes it on globalThis when configure() runs.
+        exampleremote: "promise globalThis.__MFE_ORCHESTRATOR__.loadWebpackRemote('example-remote', 'exampleremote')",
       },
       shared: {
         vue: {

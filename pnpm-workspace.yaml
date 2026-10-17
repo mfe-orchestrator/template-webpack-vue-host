@@ -1,0 +1,4 @@
+# 0.3.0 of the client SDK is younger than pnpm's minimum release age. It is the
+# first version with loadWebpackRemote(): drop this once it has aged past it.
+minimumReleaseAgeExclude:
+  - '@mfe-orchestrator-hub/client@0.3.0'

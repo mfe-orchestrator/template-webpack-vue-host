@@ -167,8 +167,8 @@ importers:
   .:
     dependencies:
       '@mfe-orchestrator-hub/client':
-        specifier: ^0.2.1
-        version: 0.2.1
+        specifier: ^0.3.0
+        version: 0.3.0
       vue:
         specifier: ^3.5.44
         version: 3.5.44(typescript@6.0.3)
@@ -379,8 +379,8 @@ packages:
   '@leichtgewicht/ip-codec@2.0.5':
     resolution: {integrity: sha512-Vo+PSpZG2/fmgmiNzYK9qWRh8h/CHrwD0mo1h1DzL4yzHNSfWYujGTYsWGreD000gcgmZ7K4Ys6Tx9TxtsKdDw==}
 
-  '@mfe-orchestrator-hub/client@0.2.1':
-    resolution: {integrity: sha512-rMNk0hgkYf5VffdWGkyM5b0SXPGNmy8vQj55+oF2aqhXAuxE3nNPioy1oUTq8JZEHZvCGwMiH2/vk5WuzumMWg==}
+  '@mfe-orchestrator-hub/client@0.3.0':
+    resolution: {integrity: sha512-4Kz5BMvxeiKIFknbTSfFIcwFU5LWTd+VM6MUefV6PoGzF6Xxqr4eOp2BkbT7nPSYLepfL8MRrjvc9nf7uGxZ0w==}
     engines: {node: '>=20.0.0'}
 
   '@noble/hashes@1.8.0':
@@ -2011,7 +2011,7 @@ snapshots:
 
   '@leichtgewicht/ip-codec@2.0.5': {}
 
-  '@mfe-orchestrator-hub/client@0.2.1': {}
+  '@mfe-orchestrator-hub/client@0.3.0': {}
 
   '@noble/hashes@1.8.0': {}
 
