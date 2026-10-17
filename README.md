@@ -10,10 +10,10 @@ marketplace as `webpack-host-vue`. Webpack 5 + Vue 3, wired as a **host**.
 
 > [!NOTE]
 > The client SDK is published as `@mfe-orchestrator-hub/client` and this template depends on it at
-> `^0.2.1`. A caret on a `0.x` version is deliberately narrow: it accepts `0.2.x`
-> only, **not** `0.3.0`. The SDK is new and parts of its API are still settling, so that is the
-> intended level of caution — the cost is that you have to widen this range yourself when the SDK
-> moves to `0.3.0`, otherwise `pnpm install` fails to resolve it.
+> `^0.3.0`, the first version with `loadWebpackRemote()`. A caret on a `0.x` version is deliberately
+> narrow: it accepts `0.3.x` only, **not** `0.4.0`. The SDK is new and parts of its API are still
+> settling, so that is the intended level of caution — the cost is that you have to widen this range
+> yourself when the SDK moves to `0.4.0`, otherwise `pnpm install` fails to resolve it.
 
 ## Getting started
 
@@ -73,7 +73,7 @@ build that forgot the variable to that environment — and the entry point then 
 of forwarding a fake slug. Set `MFE_ENVIRONMENT` only when you want to pin the environment
 explicitly — for instance when several environments are served from the same domain.
 
-**2. The remote, declared in `webpack.config.ts` as a promise that resolves to a URL:**
+**2. The remote, declared in `webpack.config.ts` as a promise that resolves to the remote's container:**
 
 ```js
 new ModuleFederationPlugin({
@@ -81,15 +81,31 @@ new ModuleFederationPlugin({
   filename: 'remoteEntry.js',
   exposes: { './App': './src/...' },
   remotes: {
-    exampleremote: `promise import('@mfe-orchestrator-hub/client').then(m => m.remoteUrl('example-remote'))`,
+    // key: what you import from; 'example-remote': the slug in the orchestrator;
+    // 'exampleremote': the scope, the remote's own ModuleFederationPlugin name
+    exampleremote: "promise globalThis.__MFE_ORCHESTRATOR__.loadWebpackRemote('example-remote', 'exampleremote')",
   },
   shared: { ... },
 })
 ```
 
-`remoteUrl('example-remote')` takes the **slug** of a microfrontend and returns the URL the backend
-resolved for it, already pinned to a version. Rename the key and the slug to match your own
-microfrontends, and add one entry per remote.
+- **The key** (`exampleremote`) is the name you import from: `import('exampleremote/Button')`. It
+  needs a matching module declaration in `src/remotes.d.ts`.
+- **The slug** (`'example-remote'`) is the microfrontend in the orchestrator. `loadWebpackRemote()`
+  asks the backend for the URL it resolved for that slug, already pinned to a version, injects that
+  `remoteEntry.js` once and returns the container. Never write a URL there by hand.
+- **The scope** (`'exampleremote'`) is the `name` the remote gives its own `ModuleFederationPlugin`,
+  which is how webpack finds the container once the script has run. A remote created by the console
+  from a webpack template is named after its slug, slashes to underscores and dashes removed
+  (`checkout-new` → `checkoutnew`), the same name the console writes in the configs it generates.
+  Left out, it is the `nameToIntegrate` the manifest gives for the slug, which is that same name.
+
+`loadWebpackRemote` is a global because `ModuleFederationPlugin` pastes a `promise` remote into the
+bundle verbatim: it cannot import a package. `configure()` publishes it on
+`globalThis.__MFE_ORCHESTRATOR__`, which is one more reason it runs first.
+
+Rename the key, the slug and the scope to match your own microfrontends, and add one entry per
+remote.
 
 The SDK also exposes `manifest()`, `globalVariables()` and `identities()`, all used in this
 template, so you can see what the environment actually returned.
@@ -119,7 +135,7 @@ set it. The page stays blank until then.
 
 `pnpm build` writes to `dist/`. The federation entry lands at **`dist/remoteEntry.js`**.
 
-The marketplace entry for this template declares no `entryPoint`; the whole `dist/` folder is what gets uploaded.
+The marketplace entry for this template declares `remoteEntry.js` as its `entryPoint`, because a host is consumable as a remote too; the whole `dist/` folder is what gets uploaded.
 
 Check it after any change to `webpack.config.ts`: the orchestrator serves exactly that path, so a build that
 puts the entry somewhere else is broken.
@@ -158,7 +174,7 @@ docker run -p 8080:80 my-host
 
 ## Notes
 
-- `configure()` runs in `src/index.ts`, before the `import('./bootstrap')` that starts the app. Keep that order: the federation runtime imports the SDK to resolve a remote and expects it already configured.
+- `configure()` runs in `src/index.ts`, before the `import('./bootstrap')` that starts the app. Keep that order: it publishes the `loadWebpackRemote()` the remote declarations call, and a remote must not be resolved before the SDK knows where the backend is.
 - `output.publicPath` stays `'auto'`. A classic script derives the base of its chunks from `document.currentScript.src`, which is the URL *before* any redirect, so this is what keeps a version pinned entry loading its own chunks instead of mixing two builds in one page.
 
 ## License
