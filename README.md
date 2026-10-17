@@ -5,15 +5,15 @@ marketplace as `webpack-host-vue`. Webpack 5 + Vue 3, wired as a **host**.
 
 ## Requirements
 
-- Node.js 20 or newer
+- Node.js 22.15 or newer (CI builds on Node 24, the current LTS)
 - [pnpm](https://pnpm.io) 10 or newer
 
 > [!NOTE]
 > The client SDK is published as `@mfe-orchestrator-hub/client` and this template depends on it at
-> `^0.1.0`. A caret on a `0.x` version is deliberately narrow: it accepts `0.1.x`
-> only, **not** `0.2.0`. The SDK is new and parts of its API are still settling, so that is the
+> `^0.2.1`. A caret on a `0.x` version is deliberately narrow: it accepts `0.2.x`
+> only, **not** `0.3.0`. The SDK is new and parts of its API are still settling, so that is the
 > intended level of caution — the cost is that you have to widen this range yourself when the SDK
-> moves to `0.2.0`, otherwise `pnpm install` fails to resolve it.
+> moves to `0.3.0`, otherwise `pnpm install` fails to resolve it.
 
 ## Getting started
 
@@ -110,6 +110,10 @@ MFE_PROJECT_ID=abc123 pnpm build                       # resolved by domain
 ```
 
 `.env` is gitignored. Never commit real values.
+
+Both required values have to reach the bundle: since SDK `0.2`, `configure()` throws at startup
+when either is missing or still a placeholder, and the browser console says which one and where to
+set it. The page stays blank until then.
 
 ## Build output
 

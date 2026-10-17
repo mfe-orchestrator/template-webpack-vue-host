@@ -1,7 +1,7 @@
 {
   "name": "template-webpack-vue-host",
   "version": "1.0.0",
-  "packageManager": "pnpm@11.21.0",
+  "packageManager": "pnpm@12.14.0",
   "description": "Webpack + Vue 3 + TypeScript + Module Federation Host",
   "scripts": {
     "start": "webpack serve --mode development --open",
@@ -18,21 +18,21 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@mfe-orchestrator-hub/client": "^0.1.1",
-    "vue": "^3.5.41"
+    "@mfe-orchestrator-hub/client": "^0.2.1",
+    "vue": "^3.5.44"
   },
   "devDependencies": {
-    "@types/node": "^26.2.0",
-    "css-loader": "^7.1.4",
+    "@types/node": "^26.6.5",
+    "css-loader": "^7.1.5",
     "html-webpack-plugin": "^5.6.8",
     "style-loader": "^4.0.0",
     "ts-loader": "^9.6.2",
     "ts-node": "^10.9.2",
-    "typescript": "~5.9.3",
+    "typescript": "~6.0.3",
     "vue-loader": "^17.4.2",
-    "vue-tsc": "^3.3.10",
-    "webpack": "^5.109.2",
-    "webpack-cli": "^7.2.2",
+    "vue-tsc": "^3.3.13",
+    "webpack": "^5.112.0",
+    "webpack-cli": "^7.2.3",
     "webpack-dev-server": "^6.0.0"
   }
 }
