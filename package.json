@@ -13,12 +13,12 @@
     "vue",
     "typescript",
     "module-federation",
-    "microfrontend"
+    "frontend"
   ],
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@mfe-orchestrator-hub/client": "^0.3.0",
+    "@mfe-orchestrator-hub/client": "^0.4.0",
     "vue": "^3.5.44"
   },
   "devDependencies": {

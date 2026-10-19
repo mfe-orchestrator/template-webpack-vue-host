@@ -91,7 +91,7 @@ new ModuleFederationPlugin({
 
 - **The key** (`exampleremote`) is the name you import from: `import('exampleremote/Button')`. It
   needs a matching module declaration in `src/remotes.d.ts`.
-- **The slug** (`'example-remote'`) is the microfrontend in the orchestrator. `loadWebpackRemote()`
+- **The slug** (`'example-remote'`) is the frontend in the orchestrator. `loadWebpackRemote()`
   asks the backend for the URL it resolved for that slug, already pinned to a version, injects that
   `remoteEntry.js` once and returns the container. Never write a URL there by hand.
 - **The scope** (`'exampleremote'`) is the `name` the remote gives its own `ModuleFederationPlugin`,
@@ -104,7 +104,7 @@ new ModuleFederationPlugin({
 bundle verbatim: it cannot import a package. `configure()` publishes it on
 `globalThis.__MFE_ORCHESTRATOR__`, which is one more reason it runs first.
 
-Rename the key, the slug and the scope to match your own microfrontends, and add one entry per
+Rename the key, the slug and the scope to match your own frontends, and add one entry per
 remote.
 
 The SDK also exposes `manifest()`, `globalVariables()` and `identities()`, all used in this

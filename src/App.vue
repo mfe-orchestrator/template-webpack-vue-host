@@ -3,7 +3,7 @@ import { defineAsyncComponent, h } from 'vue';
 import ManifestPanel from './components/ManifestPanel.vue';
 
 // Example remote, declared in webpack.config.ts. Rename "exampleremote" and the
-// slug it points to, or delete both once you wire your own microfrontends.
+// slug it points to, or delete both once you wire your own frontends.
 const RemoteButton = defineAsyncComponent({
   loader: () => import('exampleremote/Button'),
   loadingComponent: { render: () => h('span', 'Loading remote…') },

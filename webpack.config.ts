@@ -78,10 +78,10 @@ const config: WebpackConfiguration = {
         './App': './src/App.vue',
       },
       remotes: {
-        // One entry per microfrontend this host consumes:
+        // One entry per frontend this host consumes:
         // - the key is the name you import from ("exampleremote/Button"), and it must
         //   have a matching module declaration in src/remotes.d.ts;
-        // - 'example-remote' is the *slug* of the microfrontend in the orchestrator;
+        // - 'example-remote' is the *slug* of the frontend in the orchestrator;
         // - 'exampleremote' is the scope, the remote's own ModuleFederationPlugin
         //   `name`. A remote created by the console from a webpack template is named
         //   after its slug, slashes to underscores and dashes removed.

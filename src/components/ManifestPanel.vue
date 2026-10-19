@@ -4,10 +4,10 @@ import {
   globalVariables,
   identities,
   manifest,
-  type Microfrontend,
+  type Frontend,
 } from '@mfe-orchestrator-hub/client';
 
-const microfrontends = ref<Microfrontend[]>([]);
+const frontends = ref<Frontend[]>([]);
 const variables = ref<Record<string, string>>({});
 const error = ref<string | null>(null);
 const ids = identities();
@@ -15,7 +15,7 @@ const ids = identities();
 onMounted(async () => {
   try {
     const [data, vars] = await Promise.all([manifest(), globalVariables()]);
-    microfrontends.value = data.microfrontends ?? [];
+    frontends.value = data.frontends ?? [];
     variables.value = vars;
   } catch (e) {
     error.value = e instanceof Error ? e.message : String(e);
@@ -29,7 +29,7 @@ onMounted(async () => {
     <p v-if="error" class="remote-error">{{ error }}</p>
     <template v-else>
       <ul>
-        <li v-for="mfe in microfrontends" :key="mfe.slug">
+        <li v-for="mfe in frontends" :key="mfe.slug">
           <strong>{{ mfe.name }}</strong> ({{ mfe.slug }}) — served version {{ mfe.version }}
         </li>
       </ul>
